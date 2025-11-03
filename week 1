@@ -1,0 +1,124 @@
+STUDENT GRADE CALCULATOR:
+
+// Topics Covered: Output, Comments, Variables, Data Types, Operators, Type Casting, If-Else Statements
+
+import java.util.Scanner; // Importing Scanner class for user input
+
+public class StudentGradeCalculator {
+    public static void main(String[] args) {
+
+        // Create Scanner object to take input from user
+        Scanner input = new Scanner(System.in);
+
+        // Asking the user to enter marks for each component
+        System.out.print("Enter Quiz Marks (out of 15): ");
+        int quizMarks = input.nextInt();
+
+        System.out.print("Enter Assignment Marks (out of 10): ");
+        int assignmentMarks = input.nextInt();
+
+        System.out.print("Enter Mid-Term Marks (out of 25): ");
+        int midTermMarks = input.nextInt();
+
+        System.out.print("Enter Final Exam Marks (out of 50): ");
+        int finalMarks = input.nextInt();
+
+        // Calculate total marks
+        int totalMarks = quizMarks + assignmentMarks + midTermMarks + finalMarks;
+
+        // Calculate average using type casting to show decimal value
+        double average = (double) totalMarks; // total out of 100
+
+        // Display total and average
+        System.out.println("Total Marks = " + totalMarks);
+        System.out.println("Average = " + average);
+
+        // Determine grade using if-else conditions
+        char grade; // variable to store grade
+
+        if (average >= 85) {
+            grade = 'A';
+        } else if (average >= 70) {
+            grade = 'B';
+        } else if (average >= 50) {
+            grade = 'C';
+        } else {
+            grade = 'F'; // Fail
+        }
+
+        // Display grade
+        System.out.println("Grade = " + grade);
+
+        // Close scanner
+        input.close();
+    }
+}
+
+
+
+
+// Q2: Pizza Billing System
+// Topics Covered: Strings, If-Else, Switch, Math Operators, Booleans, Output, Comments
+
+import java.util.Scanner; // Import Scanner for user input
+
+public class PizzaBillingSystem {
+    public static void main(String[] args) {
+
+        // Create Scanner object to read user input
+        Scanner input = new Scanner(System.in);
+
+        // Step 1: Ask the user for pizza size
+        System.out.print("Enter pizza size (small/medium/large): ");
+        String size = input.nextLine().toLowerCase(); // Convert input to lowercase for easy comparison
+
+        int bill = 0; // Variable to store total bill
+
+        // Step 2: Assign base price using switch statement
+        switch (size) {
+            case "small":
+                bill = 100;
+                break;
+            case "medium":
+                bill = 200;
+                break;
+            case "large":
+                bill = 300;
+                break;
+            default:
+                System.out.println("Invalid size entered!");
+                input.close();
+                return; // Exit program if invalid input
+        }
+
+        // Step 3: Ask if user wants pepperoni
+        System.out.print("Do you want pepperoni? (yes/no): ");
+        String pepperoni = input.nextLine().toLowerCase();
+
+        if (pepperoni.equals("yes")) {
+            if (size.equals("small")) {
+                bill += 30;
+            } else { // medium or large
+                bill += 50;
+            }
+        }
+
+        // Step 4: Ask if user wants extra cheese
+        System.out.print("Do you want extra cheese? (yes/no): ");
+        String cheese = input.nextLine().toLowerCase();
+
+        if (cheese.equals("yes")) {
+            bill += 20;
+        }
+
+        // Step 5: Display the final bill
+        System.out.println("Your final bill is: " + bill + " rupees");
+
+        // Close Scanner
+        input.close();
+    }
+}
+
+
+
+
