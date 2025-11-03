@@ -1,0 +1,162 @@
+// Q1: Array Data Structure - Menu Driven Program
+// Topics Covered: Arrays, Loops, Methods, Switch, Insertion, Deletion, Searching
+
+import java.util.Scanner;
+
+public class ArrayOperations {
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+
+        int[] arr = new int[100]; // maximum size of array
+        int n; // actual number of elements
+
+        // Step 1: Take initial array input
+        System.out.print("Enter number of elements: ");
+        n = input.nextInt();
+
+        System.out.println("Enter " + n + " elements:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = input.nextInt();
+        }
+
+        // Step 2: Menu-driven loop
+        while (true) {
+            System.out.println("\n============================");
+            System.out.println("   ARRAY OPERATIONS MENU");
+            System.out.println("============================");
+            System.out.println("1. Traversal");
+            System.out.println("2. Insert Element");
+            System.out.println("3. Delete Element");
+            System.out.println("4. Search Element");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = input.nextInt();
+
+            switch (choice) {
+                // 1. Traversal
+                case 1:
+                    System.out.println("Array elements are:");
+                    for (int i = 0; i < n; i++) {
+                        System.out.print(arr[i] + " ");
+                    }
+                    System.out.println();
+                    break;
+
+                // 2. Insertion
+                case 2:
+                    System.out.println("\nInsert at:");
+                    System.out.println("1. Beginning");
+                    System.out.println("2. Given Position");
+                    System.out.println("3. End");
+                    System.out.print("Enter choice: ");
+                    int insertChoice = input.nextInt();
+
+                    System.out.print("Enter element to insert: ");
+                    int element = input.nextInt();
+
+                    if (insertChoice == 1) { // Beginning
+                        for (int i = n; i > 0; i--) {
+                            arr[i] = arr[i - 1];
+                        }
+                        arr[0] = element;
+                        n++;
+                        System.out.println("Inserted at beginning.");
+
+                    } else if (insertChoice == 2) { // Given position
+                        System.out.print("Enter position (1 to " + (n + 1) + "): ");
+                        int pos = input.nextInt();
+                        if (pos < 1 || pos > n + 1) {
+                            System.out.println("Invalid position!");
+                            break;
+                        }
+                        for (int i = n; i >= pos; i--) {
+                            arr[i] = arr[i - 1];
+                        }
+                        arr[pos - 1] = element;
+                        n++;
+                        System.out.println("Inserted at position " + pos + ".");
+
+                    } else if (insertChoice == 3) { // End
+                        arr[n] = element;
+                        n++;
+                        System.out.println("Inserted at end.");
+
+                    } else {
+                        System.out.println("Invalid choice!");
+                    }
+                    break;
+
+                // 3. Deletion
+                case 3:
+                    System.out.println("\nDelete from:");
+                    System.out.println("1. Beginning");
+                    System.out.println("2. Given Position");
+                    System.out.println("3. End");
+                    System.out.print("Enter choice: ");
+                    int delChoice = input.nextInt();
+
+                    if (n == 0) {
+                        System.out.println("Array is empty!");
+                        break;
+                    }
+
+                    if (delChoice == 1) { // Beginning
+                        for (int i = 0; i < n - 1; i++) {
+                            arr[i] = arr[i + 1];
+                        }
+                        n--;
+                        System.out.println("Deleted from beginning.");
+
+                    } else if (delChoice == 2) { // Given position
+                        System.out.print("Enter position (1 to " + n + "): ");
+                        int pos = input.nextInt();
+                        if (pos < 1 || pos > n) {
+                            System.out.println("Invalid position!");
+                            break;
+                        }
+                        for (int i = pos - 1; i < n - 1; i++) {
+                            arr[i] = arr[i + 1];
+                        }
+                        n--;
+                        System.out.println("Deleted from position " + pos + ".");
+
+                    } else if (delChoice == 3) { // End
+                        n--;
+                        System.out.println("Deleted from end.");
+
+                    } else {
+                        System.out.println("Invalid choice!");
+                    }
+                    break;
+
+                // 4. Searching
+                case 4:
+                    System.out.print("Enter element to search: ");
+                    int key = input.nextInt();
+                    boolean found = false;
+                    for (int i = 0; i < n; i++) {
+                        if (arr[i] == key) {
+                            System.out.println("Element found at position " + (i + 1));
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found)
+                        System.out.println("Element not found!");
+                    break;
+
+                // 5. Exit
+                case 5:
+                    System.out.println("Exiting program. Goodbye!");
+                    input.close();
+                    return;
+
+                // Invalid Choice
+                default:
+                    System.out.println("Invalid choice! Try again.");
+            }
+        }
+    }
+}
