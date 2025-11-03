@@ -1,0 +1,274 @@
+import java.util.Stack;
+import java.util.Scanner;
+
+public class ExpressionConverter {
+
+    // ---------- TASK 1: STACK IMPLEMENTATION ----------
+    static class MyStack {
+        private char[] stackArray;
+        private int top;
+        private int size;
+
+        MyStack(int size) {
+            this.size = size;
+            stackArray = new char[size];
+            top = -1;
+        }
+
+        void push(char c) {
+            if (top == size - 1)
+                System.out.println("Stack Overflow!");
+            else
+                stackArray[++top] = c;
+        }
+
+        char pop() {
+            if (isEmpty()) {
+                System.out.println("Stack Underflow!");
+                return '\0';
+            } else
+                return stackArray[top--];
+        }
+
+        char peek() {
+            if (isEmpty())
+                return '\0';
+            return stackArray[top];
+        }
+
+        boolean isEmpty() {
+            return top == -1;
+        }
+    }
+
+    // ---------- TASK 2: INFIX TO POSTFIX ----------
+    static int precedence(char ch) {
+        switch (ch) {
+            case '+':
+            case '-':
+                return 1;
+            case '*':
+            case '/':
+            case '%':
+                return 2;
+            case '^':
+                return 3;
+        }
+        return -1;
+    }
+
+    static String infixToPostfix(String infix) {
+        StringBuilder result = new StringBuilder();
+        MyStack stack = new MyStack(infix.length());
+
+        for (int i = 0; i < infix.length(); i++) {
+            char ch = infix.charAt(i);
+
+            // Ignore spaces
+            if (ch == ' ')
+                continue;
+
+            // Operand → Add to result
+            if (Character.isLetterOrDigit(ch)) {
+                result.append(ch).append(' ');
+            }
+
+            // '(' → Push to stack
+            else if (ch == '(') {
+                stack.push(ch);
+            }
+
+            // ')' → Pop till '('
+            else if (ch == ')') {
+                while (!stack.isEmpty() && stack.peek() != '(')
+                    result.append(stack.pop()).append(' ');
+                if (!stack.isEmpty() && stack.peek() == '(')
+                    stack.pop(); // remove '('
+            }
+
+            // Operator
+            else {
+                while (!stack.isEmpty() && precedence(ch) <= precedence(stack.peek())) {
+                    result.append(stack.pop()).append(' ');
+                }
+                stack.push(ch);
+            }
+        }
+
+        // Pop remaining operators
+        while (!stack.isEmpty()) {
+            result.append(stack.pop()).append(' ');
+        }
+
+        return result.toString().trim();
+    }
+
+    // ---------- TASK 3: INFIX TO PREFIX ----------
+    static String reverseString(String s) {
+        StringBuilder rev = new StringBuilder();
+        for (int i = s.length() - 1; i >= 0; i--) {
+            char ch = s.charAt(i);
+            if (ch == '(')
+                rev.append(')');
+            else if (ch == ')')
+                rev.append('(');
+            else
+                rev.append(ch);
+        }
+        return rev.toString();
+    }
+
+    static String infixToPrefix(String infix) {
+        String reversed = reverseString(infix);
+        String postfix = infixToPostfix(reversed);
+        StringBuilder prefix = new StringBuilder(postfix);
+        return new StringBuilder(prefix.reverse().toString()).reverse().toString();
+    }
+
+    // ---------- MAIN METHOD ----------
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Infix Expression (e.g., (A + B) * (C - D)): ");
+        String infix = sc.nextLine();
+
+        String postfix = infixToPostfix(infix);
+        String prefix = infixToPrefix(infix);
+
+        System.out.println("\nInfix:   " + infix);
+        System.out.println("Postfix: " + postfix);
+        System.out.println("Prefix:  " + prefix);
+
+        sc.close();
+    }
+}
+
+
+
+
+import java.util.Scanner;
+
+public class PrinterQueueSimulation {
+
+    // ---------- TASK 4: QUEUE IMPLEMENTATION ----------
+    static class Queue {
+        private String[] queueArray;
+        private int front, rear, size, capacity;
+
+        // Constructor
+        Queue(int capacity) {
+            this.capacity = capacity;
+            queueArray = new String[capacity];
+            front = 0;
+            rear = -1;
+            size = 0;
+        }
+
+        // Add element to queue
+        void enqueue(String job) {
+            if (size == capacity) {
+                System.out.println("Queue is full! Cannot add new job.");
+                return;
+            }
+            rear = (rear + 1) % capacity;
+            queueArray[rear] = job;
+            size++;
+            System.out.println("Enqueued: \"" + job + "\"");
+        }
+
+        // Remove element from queue
+        String dequeue() {
+            if (isEmpty()) {
+                System.out.println("Queue is empty! No job to process.");
+                return null;
+            }
+            String job = queueArray[front];
+            front = (front + 1) % capacity;
+            size--;
+            System.out.println("Processing: \"" + job + "\"");
+            return job;
+        }
+
+        // Peek at the first element
+        String peek() {
+            if (isEmpty()) {
+                System.out.println("Queue is empty!");
+                return null;
+            }
+            return queueArray[front];
+        }
+
+        // Check if empty
+        boolean isEmpty() {
+            return size == 0;
+        }
+
+        // Display the queue
+        void displayQueue() {
+            if (isEmpty()) {
+                System.out.println("Queue is empty!");
+                return;
+            }
+
+            System.out.print("Current Queue: [");
+            for (int i = 0; i < size; i++) {
+                int index = (front + i) % capacity;
+                System.out.print("\"" + queueArray[index] + "\"");
+                if (i < size - 1)
+                    System.out.print(", ");
+            }
+            System.out.println("]");
+        }
+    }
+
+    // ---------- TASK 5: APPLICATION SCENARIO ----------
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Queue printerQueue = new Queue(10); // capacity of 10 print jobs
+
+        while (true) {
+            System.out.println("\n===== PRINTER QUEUE MENU =====");
+            System.out.println("1. Add Print Job (Enqueue)");
+            System.out.println("2. Process Job (Dequeue)");
+            System.out.println("3. View Next Job (Peek)");
+            System.out.println("4. Display Queue");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine(); // consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter document name: ");
+                    String job = sc.nextLine();
+                    printerQueue.enqueue(job);
+                    printerQueue.displayQueue();
+                    break;
+
+                case 2:
+                    printerQueue.dequeue();
+                    printerQueue.displayQueue();
+                    break;
+
+                case 3:
+                    String nextJob = printerQueue.peek();
+                    if (nextJob != null)
+                        System.out.println("Next job to print: \"" + nextJob + "\"");
+                    break;
+
+                case 4:
+                    printerQueue.displayQueue();
+                    break;
+
+                case 5:
+                    System.out.println("Exiting Printer Queue. Goodbye!");
+                    sc.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+        }
+    }
+}
+
